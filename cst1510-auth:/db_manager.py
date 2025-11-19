@@ -90,21 +90,20 @@ class DatabaseManager:
             """
         )
 
-        # IT tickets (IT Operations)
-        self.execute(
-            """
+                # IT tickets table
+        self.cursor.execute("""
             CREATE TABLE IF NOT EXISTS it_tickets (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                requester TEXT NOT NULL,
-                assigned_to TEXT,
-                status TEXT,
+                ticket_id INTEGER,
                 priority TEXT,
+                description TEXT,
+                status TEXT,
+                assigned_to TEXT,
                 created_at TEXT,
-                resolved_at TEXT,
                 resolution_time_hours REAL
             );
-            """
-        )
+        """)
+
 
         print(" All tables created (users, cyber_incidents, datasets_metadata, it_tickets).")
 
