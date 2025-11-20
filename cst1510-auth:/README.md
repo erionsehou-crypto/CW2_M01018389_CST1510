@@ -16,8 +16,9 @@ This work follows the Week 8 requirements of CST1510.
 
 ## 📁 Project Structure
 
+```text
 cst1510-auth/
-│
+
 ├── auth.py              # Authentication system from Week 7 (used for user migration)
 ├── db_manager.py        # Creates all SQLite tables for Week 8
 ├── migrate_users.py     # Migrates Week 7 users.txt → SQLite users table
@@ -31,6 +32,7 @@ cst1510-auth/
 │   ├── it_tickets.csv
 │
 └── README.md
+
 
 
 ## Setup Instructions
