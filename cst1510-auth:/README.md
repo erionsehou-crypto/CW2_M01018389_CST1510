@@ -18,10 +18,10 @@ This work follows the Week 8 requirements of CST1510.
 
 cst1510-auth/
 │
-├── auth.py              # Week 7 authentication system (bcrypt)
-├── db_manager.py        # Database manager + table creation
+├── auth.py              # Authentication system from Week 7 (used for user migration)
+├── db_manager.py        # Creates all SQLite tables for Week 8
 ├── migrate_users.py     # Migrates Week 7 users.txt → SQLite users table
-├── load_data.py         # Loads CSV data from /Data into SQLite
+├── load_data.py         # Loads CSV data from /Data into SQLite (Week 8)
 ├── crud.py              # Full CRUD menu for all 3 domains
 ├── database.db          # SQLite database
 │
@@ -32,8 +32,6 @@ cst1510-auth/
 │
 └── README.md
 
-
----
 
 ## Setup Instructions
 
