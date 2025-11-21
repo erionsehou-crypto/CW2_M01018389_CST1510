@@ -161,7 +161,7 @@ def main():
         load_cyber_incidents(db)
         load_datasets_metadata(db)
         load_it_tickets(db)
-        print("\n🎉 All CSV data loaded successfully into SQLite!")
+        print("\n All CSV data loaded successfully into SQLite!")
     finally:
         db.close()
         print("[INFO] Database connection closed.")
