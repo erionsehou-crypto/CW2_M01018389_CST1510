@@ -169,3 +169,59 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+def load_cyber_incidents_from_csv(csv_path: str = "Data/cyber_incidents.csv") -> int:
+    """
+    Loads cyber incidents into SQLite from CSV ONLY if table is empty.
+    Returns number of inserted rows.
+    """
+    SecurityIncident.ensure_table()
+
+    if SecurityIncident.count() > 0:
+        return 0
+
+    df = pd.read_csv(csv_path)
+
+    inserted = 0
+    
+    for _, r in df.iterrows():
+        incident_type = str(r.get("incident_type", "Other"))
+        severity = str(r.get("severity", "Low"))
+        description = str(r.get("description", "Imported from CSV"))
+        analyst = r.get("analyst", None)
+
+       
+        SecurityIncident.create(incident_type, severity, description, analyst)
+        inserted += 1
+
+    return inserted
+
+
+def load_datasets_metadata_from_csv(csv_path: str = "Data/datasets_metadata.csv") -> int:
+    """
+    Loads datasets metadata into SQLite from CSV ONLY if table is empty.
+    Returns number of inserted rows.
+    """
+    DatasetMetadata.ensure_table()
+
+    if DatasetMetadata.count() > 0:
+        return 0
+
+    df = pd.read_csv(csv_path)
+    inserted = 0
+
+    for _, r in df.iterrows():
+       
+        dataset_name = str(r.get("dataset_name", r.get("name", "Unnamed Dataset")))
+        source = str(r.get("source", r.get("department", "Unknown")))
+        owner = str(r.get("owner", r.get("steward", "Unknown")))
+        rows = int(r.get("rows", r.get("row_count", 0)))
+        size_mb = float(r.get("size_mb", r.get("size", r.get("sizeMB", 0.0))))
+        sensitivity = str(r.get("sensitivity", r.get("classification", "Low")))
+        status = str(r.get("status", "Active"))
+
+        DatasetMetadata.create(dataset_name, source, owner, rows, size_mb, sensitivity, status=status)
+        inserted += 1
+
+    return inserted

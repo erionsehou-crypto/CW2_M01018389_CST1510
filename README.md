@@ -1,8 +1,8 @@
 Multi-Domain Intelligence Platform
-Streamlit Application with Authentication, IT Ticket Dashboard & AI Assistant
+Streamlit Application with Authentication, Multi-Domain Dashboards & AI Assistant
 
 This project is a multi-page Streamlit web application developed as part of CST1510 – Programming for Data Communication and Networks.
-It includes secure authentication, a full CRUD dashboard for IT tickets, data visualisation, an OOP refactor, and an AI assistant powered by OpenAI’s API.
+It includes secure authentication, three complete operational domains (IT Operations, Cybersecurity, Data Science), full CRUD dashboards with analytics, an object-oriented refactor, and an AI assistant powered by OpenAI’s API.
 
 🚀 Features Overview
 🔐 1. User Authentication
@@ -17,9 +17,9 @@ Secure login required before accessing dashboards
 
 Authentication logic and user storage handled in auth_db.py (SQLite)
 
-📊 2. IT Tickets Dashboard (CRUD + Analytics)
+📊 2. IT Operations Dashboard (IT Tickets)
 
-Create, read, update and delete IT support tickets
+Create, read, update and delete IT support tickets (Full CRUD)
 
 Full OOP implementation using the ITTicket class (models.py)
 
@@ -35,110 +35,149 @@ Pie chart: Tickets by Priority
 
 Dynamic table view of all tickets
 
-🤖 3. AI Assistant for IT Tickets
+🛡️ 3. Cybersecurity Dashboard (Incidents)
 
-A dedicated page where users can ask questions about ticket trends, risks or recommendations
+Full CRUD management of cybersecurity incidents
 
-The AI assistant uses summarised context extracted from stored tickets
+OOP implementation using the SecurityIncident class (models.py)
+
+KPIs such as total incidents, open vs resolved incidents, and phishing count
+
+Visual analytics using Plotly:
+
+Incidents by Severity
+
+Incidents by Type
+
+Supports loading sample data from Data/cyber_incidents.csv
+
+📈 4. Data Science Dashboard (Datasets Metadata)
+
+Full CRUD management of dataset metadata
+
+OOP implementation using the DatasetMetadata class (models.py)
+
+KPIs including:
+
+Total datasets
+
+Total dataset size (MB)
+
+Active datasets
+
+High-sensitivity datasets
+
+Visualisations using Plotly:
+
+Top datasets by size (MB)
+
+Top datasets by row count
+
+Source dependency (datasets by department/source)
+
+Governance / archiving signal table
+
+Supports loading sample data from Data/datasets_metadata.csv
+
+🤖 5. AI Assistant
+
+Dedicated page where users can ask questions about stored operational data
 
 Integrated with the OpenAI API (GPT models)
 
-Uses the OPENAI_API_KEY environment variable (no API key is stored inside the code)
+Uses the OPENAI_API_KEY environment variable
 
-Friendly error messages for missing/invalid keys or insufficient quota
+No API keys are stored in the repository
 
-🧱 4. Object-Oriented Refactor (Week 11 Requirement)
+Friendly error handling for missing or invalid API keys and quota limits
 
-All ticket database logic is encapsulated in the OOP-based ITTicket class:
+🧱 6. Object-Oriented Refactor (Week 11 Requirement)
 
-The class provides:
+All database logic is encapsulated in OOP model classes defined in models.py, including:
 
-get_all()
+ITTicket
 
-get_by_id()
+SecurityIncident
 
-create()
+DatasetMetadata
 
-update()
+Each class provides methods such as:
 
-delete()
+get_all(), get_by_id()
 
-to_dict()
+create(), update(), delete()
 
-from_row()
+from_row() with safe data handling
 
-This removes raw SQL from the Streamlit UI pages, ensuring clean separation between UI, logic, and database operations.
+This design removes raw SQL from Streamlit UI pages and ensures clear separation between UI, logic, and database layers.
 
 📁 Project Structure
-/project-root
+cst1510-auth/
 │
-├── Home.py                 # Main entry point (login/register)
-├── auth_db.py              # Authentication system (SQLite + bcrypt)
-├── models.py               # OOP model for ITTicket + DB methods
-├── ai_helper.py            # OpenAI wrapper for AI Assistant page
-├── README.md
+├── Home.py                  # Main entry point (login/register)
+├── auth_db.py               # Authentication system (SQLite + bcrypt)
+├── db_manager.py            # Database connection helper
+├── models.py                # OOP models (ITTicket, SecurityIncident, DatasetMetadata)
+├── ai_helper.py             # OpenAI wrapper for AI Assistant
+├── database.db              # SQLite database (local)
 ├── requirements.txt
 │
+├── assets/
+│   └── home_hero.jpg        # Home page hero image
+│
 ├── pages/
-│   ├── 1_Dashboard.py      # CRUD + charts
-│   └── 2_AI_Assistant.py   # AI ticket assistant
+│   ├── 1_Dashboard.py       # IT Operations dashboard
+│   ├── 2_AI_Assistant.py    # AI Assistant
+│   ├── 3_Cybersecurity.py   # Cybersecurity dashboard
+│   └── 4_DataScience.py     # Data Science dashboard
 │
 └── Data/
     ├── it_tickets.csv
-    ├── datasets_metadata.csv
-    └── cyber_incidents.csv
+    ├── cyber_incidents.csv
+    └── datasets_metadata.csv
 
-🧠 UML Class Diagram (Week 11 Requirement)
+🧠 UML Class Diagram (Mermaid)
 classDiagram
-    class ITTicket {
-        +id: int
-        +title: str
-        +priority: str
-        +status: str
-        +created_date: str
-        ---
-        +get_all()
-        +get_by_id(id)
-        +create(title, priority, status)
-        +update(priority, status)
-        +delete()
-        +to_dict()
-        +from_row(row)
-    }
+    class ITTicket
+    class SecurityIncident
+    class DatasetMetadata
+    class User
 
-    class User {
-        +id: int
-        +username: str
-        +password_hash: str
-    }
-
-    ITTicket --> "stored in" SQLite
-    User --> "stored in" SQLite
+    ITTicket --> SQLite
+    SecurityIncident --> SQLite
+    DatasetMetadata --> SQLite
+    User --> SQLite
 
 🔧 Installation Guide
-1️ Install dependencies
+1️⃣ Install dependencies
 pip install -r requirements.txt
 
-2️ Set OpenAI API Key
+2️⃣ Set OpenAI API Key
 
-The app expects the key in the OPENAI_API_KEY environment variable.
+The AI Assistant requires an API key set as an environment variable.
 
-Mac / Linux:
+Mac / Linux
 
 export OPENAI_API_KEY="your_key_here"
 
 
-Windows (PowerShell):
+Windows (PowerShell)
 
 setx OPENAI_API_KEY "your_key_here"
 
 
-Restart PowerShell after using setx so the variable loads.
+Restart the terminal after setting the variable.
 
-3️ Run the application
+3️⃣ Run the application
 streamlit run Home.py
 
 
-Open the URL shown in the terminal (usually:
-http://localhost:8501
-)
+Open the URL shown in the terminal (usually http://localhost:8501).
+
+✅ Notes
+
+No API keys or secrets are stored in the repository
+
+Database and virtual environment files are excluded via .gitignore
+
+The application satisfies Tier 3 (Multi-Domain Intelligence Platform) requirements

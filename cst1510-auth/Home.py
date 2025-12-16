@@ -2,19 +2,27 @@ import streamlit as st
 from auth_db import user_exists, register_user, verify_user
 
 # ---------- Initialise session state ----------
-
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
 if "username" not in st.session_state:
     st.session_state.username = ""
 
+st.set_page_config(page_title="Home", page_icon="🔐", layout="wide")
+
+# ---------- Header ----------
 st.title("🔐 Welcome")
+st.caption("Multi-Domain Intelligence Platform — IT Operations • Cybersecurity • Data Science")
+
+# ---------- Hero image (shows on both states) ----------
+st.image("assets/home_hero.jpg", use_container_width=True)
+
+st.divider()
 
 # If already logged in, go straight to dashboard
 if st.session_state.logged_in:
     st.success(f"Already logged in as **{st.session_state.username}**.")
-    if st.button("Go to Dashboard"):
+    if st.button("Go to Dashboard", type="primary"):
         st.switch_page("pages/1_Dashboard.py")
     st.stop()
 
@@ -29,13 +37,14 @@ with tab_login:
     login_password = st.text_input("Password", type="password", key="login_password")
 
     if st.button("Log in", type="primary"):
-       if verify_user(login_username, login_password):
-         st.session_state.logged_in = True
-         st.session_state.username = login_username
-         st.success(f"Welcome back, {login_username}! ")
-         st.switch_page("pages/1_Dashboard.py")
-       else:
-         st.error("Invalid username or password.")
+        if verify_user(login_username, login_password):
+            st.session_state.logged_in = True
+            st.session_state.username = login_username
+            st.success(f"Welcome back, {login_username}!")
+            st.switch_page("pages/1_Dashboard.py")
+        else:
+            st.error("Invalid username or password.")
+
 # ----- REGISTER TAB -----
 with tab_register:
     st.subheader("Register")
@@ -45,14 +54,12 @@ with tab_register:
     confirm_password = st.text_input("Confirm password", type="password", key="register_confirm")
 
     if st.button("Create account"):
-     if not new_username or not new_password:
-        st.warning("Please fill in all fields.")
-     elif new_password != confirm_password:
-        st.error("Passwords do not match.")
-     elif user_exists(new_username):
-        st.error("Username already exists.")
-     else:
-        register_user(new_username, new_password)
-        st.success("Account created! You can now log in.")
-
-
+        if not new_username or not new_password:
+            st.warning("Please fill in all fields.")
+        elif new_password != confirm_password:
+            st.error("Passwords do not match.")
+        elif user_exists(new_username):
+            st.error("Username already exists.")
+        else:
+            register_user(new_username, new_password)
+            st.success("Account created! You can now log in.")
